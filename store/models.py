@@ -4,14 +4,16 @@ from django.db import models
 class Promotion(models.Model):
     description = models.TextField()
     discount = models.FloatField()
+    
+    def __str__(self) -> str:
+        return self.description
 
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
-    featured_product = models.ForeignKey(
-        "Product", on_delete=models.SET_NULL, null=True, related_name="+"
-    )
-
+   
+    def __str__(self) -> str:
+        return self.title
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
@@ -20,8 +22,11 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
-    collection = models.ForeignObject(Collection, on_delete=models.PROTECT)
-    promotions = models.ManyToManyField(Promotion)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE, blank=True, null=True)
+    promotions = models.ManyToManyField(Promotion, blank=True)
+    
+    def __str__(self) -> str:
+        return self.title
 
 
 class Customer(models.Model):
@@ -70,7 +75,7 @@ class OrderItem(models.Model):
 class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, primary_key=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, primary_key=True, unique=True)
 
 
 class Cart(models.Model):
@@ -83,4 +88,4 @@ class CartItem(models.Model):
     quantity = models.PositiveSmallIntegerField()
 
 
-class new_tge 
+
