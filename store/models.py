@@ -17,6 +17,7 @@ class Collection(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
+    slug =  models.SlugField(max_length=200)
     description = models.TextField()
     # 7777.77
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -75,6 +76,7 @@ class OrderItem(models.Model):
 class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
+    zip = models.CharField(max_length=200)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, primary_key=True, unique=True)
 
 
@@ -89,3 +91,12 @@ class CartItem(models.Model):
 
 
 
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return self.name
+    

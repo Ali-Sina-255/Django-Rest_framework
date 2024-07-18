@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'rest_framework',
+    "rest_framework",
     "store.apps.StoreConfig",
     "tags.apps.TagsConfig",
 ]
@@ -45,7 +45,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -103,7 +103,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -114,6 +113,4 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # 'rest_framework',
-REST_FRAMEWORK = {
-    'CORECE_DECIMAL_TO_STRING':False
-}
+REST_FRAMEWORK = {"CORECE_DECIMAL_TO_STRING": False}
