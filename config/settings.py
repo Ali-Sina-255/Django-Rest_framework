@@ -105,10 +105,12 @@ USE_TZ = True
 
 REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": False,
+    # for apply every where pagination
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 4
     # 'DEFAULT_AUTHENTICATION_CLASSES': (
     #     'rest_framework.authentication.TokenAuthentication',
     # ),
-    
 }
 
 

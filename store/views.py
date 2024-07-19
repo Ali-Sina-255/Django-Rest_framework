@@ -9,18 +9,14 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProductFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.pagination import PageNumberPagination
+
 
 class ReviewApiViewSet(ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
-
-class ProductListApiView(ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['collection_id']
-    
     # def get(self, request):
     #     products = Product.objects.select_related("collection").all()
     #     serializer = ProductSerializer(products, many=True)
@@ -51,9 +47,13 @@ class ProductListApiView(ModelViewSet):
 class ProductApiViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
     # filterset_fields = ["collection_id", "price"]
     filterset_class = ProductFilter
+    pagination_class = PageNumberPagination
+    search_fields = ["title", "description"]
+    ordering_fields = ["price", "last_update"]
+
     def destroy(self, request, *args, **kwargs):
         if OrderItem.objects.filter(product_id=kwargs["pk"]).count() > 0:
             return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
