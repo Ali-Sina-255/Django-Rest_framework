@@ -7,24 +7,30 @@ from django.db.models import Count
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import ProductFilter
 
 class ReviewApiViewSet(ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
 
-class ProductListApiView(APIView):
-    def get(self, request):
-        products = Product.objects.select_related("collection").all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
+class ProductListApiView(ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['collection_id']
+    
+    # def get(self, request):
+    #     products = Product.objects.select_related("collection").all()
+    #     serializer = ProductSerializer(products, many=True)
+    #     return Response(serializer.data)
 
-    def post(self, request):
-        serializer = ProductSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+    # def post(self, request):
+    #     serializer = ProductSerializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return Response(serializer.data)
 
 
 # function base view
@@ -43,16 +49,11 @@ class ProductListApiView(APIView):
 
 
 class ProductApiViewSet(ModelViewSet):
-    def get_queryset(self):
-        queryset = Product.objects.all()
-        collection_id = Product.objects.query_parms.get("collection_id")
-        if collection_id is not None:
-            queryset = queryset.objects.filter(collection_id=collection_id)
-
-        return queryset
-
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
+    filter_backends = (DjangoFilterBackend,)
+    # filterset_fields = ["collection_id", "price"]
+    filterset_class = ProductFilter
     def destroy(self, request, *args, **kwargs):
         if OrderItem.objects.filter(product_id=kwargs["pk"]).count() > 0:
             return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
