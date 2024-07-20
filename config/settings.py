@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "django_filters",
+    "core.apps.CoreConfig",
     "store.apps.StoreConfig",
     "tags.apps.TagsConfig",
 ]
@@ -124,3 +125,5 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # 'rest_framework',
+
+AUTH_USER_MODEL = "core.User"
