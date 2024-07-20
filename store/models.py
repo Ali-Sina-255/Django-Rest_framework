@@ -1,31 +1,35 @@
 from django.db import models
+from uuid import uuid4
 
 
 class Promotion(models.Model):
     description = models.TextField()
     discount = models.FloatField()
-    
+
     def __str__(self) -> str:
         return self.description
 
 
 class Collection(models.Model):
     title = models.CharField(max_length=255)
-   
+
     def __str__(self) -> str:
         return self.title
 
+
 class Product(models.Model):
     title = models.CharField(max_length=255)
-    slug =  models.SlugField(max_length=200)
+    slug = models.SlugField(max_length=200)
     description = models.TextField()
     # 7777.77
     price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
-    collection = models.ForeignKey(Collection, on_delete=models.CASCADE, blank=True, null=True)
+    collection = models.ForeignKey(
+        Collection, on_delete=models.CASCADE, blank=True, null=True
+    )
     promotions = models.ManyToManyField(Promotion, blank=True)
-    
+
     def __str__(self) -> str:
         return self.title
 
@@ -77,26 +81,34 @@ class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     zip = models.CharField(max_length=200)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, primary_key=True, unique=True)
+    customer = models.OneToOneField(
+        Customer, on_delete=models.CASCADE, primary_key=True, unique=True
+    )
 
 
 class Cart(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(
+        Cart, on_delete=models.CASCADE, related_name="items"
+    )  # cartitems_set
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
 
+    class Meta:
+        unique_together = [["cart", "product"]]
 
 
 class Review(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="reviews"
+    )
     name = models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self) -> str:
         return self.name
-    
