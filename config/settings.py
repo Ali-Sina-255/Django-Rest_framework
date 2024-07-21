@@ -119,6 +119,9 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+Publishable_key = "pk_live_51PewZFACKRgNuyO40AuqJxRAS6GFs8aM2chECIaUMHapPiDRosEOlhwty0MwPVpfBkHtsnn4NMXxvZHIxT3t4HKz00VflI8BgC"
+Secret_key = ""
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

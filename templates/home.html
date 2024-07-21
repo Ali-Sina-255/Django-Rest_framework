@@ -4,25 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        h1{
-            color: red;
-        }
-    </style>
+    
 </head>
 <body>
-    <h1>In the name of alah.</h1>
-    <p>your name is {{name}}</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-    <form action="">
-        <input type="text"name='age' plcaceholder='Enter your aage'>
-        <br>
-        <br>
-        <input type="option"name='age' plcaceholder='Enter your aage'>
-    <br>
-        <input type="button" value='Submit'>
-    </form>
 
-    <h3>Your result is .....</h1>
+<p> 
+
+{% for project in projects %}
+    <p>{{project.name}}</p>
+
+    <h2>Project Membership </h2>
+    {{project.membership.name}}
+
+    <p>Project Sepervise </p>
+
+        <h3>{{project.superviser.name}}</h3>
+{% endfor %}
+</p>
+
+
+<p>Project_set</p>
+
+
+<p>
+    
+    {% for project in project_set %}
+    <h3>project.name</h3>
+
+    {% endfor %}
+</p>
+
 </body>
 </html>
