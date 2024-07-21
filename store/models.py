@@ -1,5 +1,9 @@
 from django.db import models
 from uuid import uuid4
+from django.conf import settings
+
+
+User = settings.AUTH_USER_MODEL
 
 
 class Promotion(models.Model):
@@ -52,6 +56,8 @@ class Customer(models.Model):
     membership = models.CharField(
         max_length=2, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE
     )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class Order(models.Model):
